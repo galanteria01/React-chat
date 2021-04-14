@@ -64,7 +64,19 @@ const SidebarButton = styled(Button)`
     
 `;
 
-const Container = styled.div``;
+const Container = styled.div`
+    flex: 0.45;
+    height: 100vh;
+    min-width: 300;
+    max-width: 350;
+    overflow-y: hidden;
+    ::-webkit-scrollbar{
+        display: none;
+    } 
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+`;
 
 const Header = styled.div`
     display:flex;
