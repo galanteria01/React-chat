@@ -1,5 +1,5 @@
 import { Avatar, Button, IconButton } from "@material-ui/core";
-import styled from "styled-components"
+import styled from "styled-components";
 import ChatIcon from '@material-ui/icons/Chat';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SearchIcon from '@material-ui/icons/Search';
@@ -18,21 +18,19 @@ const Sidebar = () => {
     const createChat = () => {
         const input = prompt('Enter the email for user you wish to chat with');
         if(!input) return null;
-        if(EmailValidator.validate(input) && input !== user.email && !chatAlreadyExists(input)) {
+        if(EmailValidator.validate(input) && !chatAlreadyExists(input) && input !== user.email ) {
             database.collection('chats').add({
-                user: [user.email,input]
-            })
+                users: [ user.email, input ]
+            });
         }
-
     }
 
     const chatAlreadyExists =(recipientEmail) =>  !!chatsSnapshot?.docs.find(chat => chat.data().users.find(user => user === recipientEmail)?.length > 0);
     
-
     return (
         <Container>
             <Header>
-                <UserAvatar onClick={() => {auth.signOut()}} />
+                <UserAvatar src={user.photoURL} onClick={() => {auth.signOut()}} />
                 <IconsContainer>
                     <IconButton>
                         <ChatIcon />
@@ -46,15 +44,16 @@ const Sidebar = () => {
                 <SearchIcon />
                 <SearchInput placeholder="Search in chats" />
             </Search>
-            <SidebarButton onClick={createChat}>Start a new chat</SidebarButton >
+            <SidebarButton onClick={createChat}>Start a new chat</SidebarButton>
+            {/* List of chats */}
             {chatsSnapshot?.docs.map((chat) => (
-                <Chat key={chat.id} id={chat.id} user={chat.data().users} /> 
+                <Chat key={chat.id} id={chat.id} users={chat.data().users} /> 
             ))}
         </Container>
-    )
+    );
 }
 
-export default Sidebar
+export default Sidebar;
 
 const SidebarButton = styled(Button)`
     width: 100%;
